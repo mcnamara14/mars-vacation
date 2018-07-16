@@ -92,9 +92,6 @@ const updatePacked = async (e) => {
   }
 }
 
-const addItemBtn = document.querySelector('.add-item-btn');
-addItemBtn.addEventListener('click', addItemToDb);
-
 const getCheckboxes = () => {
   setTimeout(function() { 
     const packedCheckboxes = document.querySelectorAll('.packed-item-checkbox');
@@ -104,5 +101,27 @@ const getCheckboxes = () => {
   }, 500);
 }
 
+const deleteItem = async (e) => {
+  const button = e.target;
+  const item = button.closest('.item-box');
+  const id = item.getAttribute('id')
+
+  const response = await fetch(`/api/v1/items/${id}`, {method: 'DELETE'});
+  item.remove();
+}
+
+const getDeleteBtns = (e) => {
+  setTimeout(function() { 
+    const deleteBtns = document.querySelectorAll('button');
+    deleteBtns.forEach(button => {
+        button.addEventListener('click', (e) => deleteItem(e))
+    });
+  }, 500);  
+}
+
+const addItemBtn = document.querySelector('.add-item-btn');
+addItemBtn.addEventListener('click', addItemToDb);
+
+getDeleteBtns();
 getCheckboxes();
 addAllItemsToPage();
