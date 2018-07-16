@@ -3,9 +3,9 @@ const addAllItemsToPage = async () => {
   const items = await response.json();
 
   items.forEach(item => {
-    addItemToPage(item)
-  })
-}
+    addItemToPage(item);
+  });
+};
 
 const addItemToDb = async () => {
   const name = document.querySelector('.item-input').value;
@@ -18,19 +18,21 @@ const addItemToDb = async () => {
       method: 'POST',
       body: JSON.stringify({ name })
     });
-    const data = await response.json();
-    const itemId = data.id;
+  const data = await response.json();
+  const itemId = data.id;
 
-    retreiveFromDb(itemId)
-}
+  getDeleteBtns();
+  getCheckboxes();
+  retreiveFromDb(itemId);
+};
 
 const retreiveFromDb = async (id) => {
-  const response = await fetch(`/api/v1/items/${id}`)
+  const response = await fetch(`/api/v1/items/${id}`);
   const data = await response.json();
   const item = data[0];
 
-  addItemToPage(item)
-}
+  addItemToPage(item);
+};
 
 const addItemToPage = (item) => {
   const itemsContainer = document.querySelector('.items-container');
@@ -62,7 +64,7 @@ const addItemToPage = (item) => {
   if (item.packed === true) {
     checkbox.checked = true;
   }
-}
+};
 
 const updatePacked = async (e) => {
   const checkbox = e.target;
@@ -72,52 +74,52 @@ const updatePacked = async (e) => {
   checkbox.classList.toggle('packed');
 
   if (checkbox.classList.contains('packed')) {
-    const response = await fetch(`/api/v1/items/${id}`, 
-    { 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'PATCH',
-      body: JSON.stringify({ "packed": true })
-    });  
+    await fetch(`/api/v1/items/${id}`, 
+      { 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH',
+        body: JSON.stringify({ "packed": true })
+      });  
   } else {
-    const response = await fetch(`/api/v1/items/${id}`, 
-    { 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'PATCH',
-      body: JSON.stringify({ "packed": false })
-    });       
+    await fetch(`/api/v1/items/${id}`, 
+      { 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PATCH',
+        body: JSON.stringify({ "packed": false })
+      });       
   }
-}
+};
 
 const getCheckboxes = () => {
   setTimeout(function() { 
     const packedCheckboxes = document.querySelectorAll('.packed-item-checkbox');
     packedCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => updatePacked(e))
+      checkbox.addEventListener('change', (e) => updatePacked(e));
     });
   }, 500);
 }
-
+;
 const deleteItem = async (e) => {
   const button = e.target;
   const item = button.closest('.item-box');
-  const id = item.getAttribute('id')
+  const id = item.getAttribute('id');
 
-  const response = await fetch(`/api/v1/items/${id}`, {method: 'DELETE'});
+  await fetch(`/api/v1/items/${id}`, {method: 'DELETE'});
   item.remove();
-}
+};
 
-const getDeleteBtns = (e) => {
+const getDeleteBtns = () => {
   setTimeout(function() { 
     const deleteBtns = document.querySelectorAll('button');
     deleteBtns.forEach(button => {
-        button.addEventListener('click', (e) => deleteItem(e))
+      button.addEventListener('click', (e) => deleteItem(e));
     });
   }, 500);  
-}
+};
 
 const addItemBtn = document.querySelector('.add-item-btn');
 addItemBtn.addEventListener('click', addItemToDb);

@@ -43,7 +43,7 @@ hr {
   align-items: center;
 }
 
-.delete-btn {
+.item-header button {
   padding: 10px 15px;
   color: #fff;
   width: 80px;
@@ -67,7 +67,7 @@ input {
   width: 26%;
 }
 
-button {
+.add-item-btn{
   width: 12%;
   padding: 10px;
   border: none;
