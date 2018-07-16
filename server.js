@@ -11,7 +11,7 @@ app.locals.title = 'Final Test';
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/v1/items', (request, response) => {
   database('items').select()
@@ -40,24 +40,24 @@ app.get('/api/v1/items/:id', (request, response) => {
 });
 
 app.post('/api/v1/items', (request, response) => {
-	const { name } = request.body;
-	const item = { name, packed: false };
+  const { name } = request.body;
+  const item = { name, packed: false };
 
-	for (let requiredParameter of ['name']) {
-		if (!request.body[requiredParameter]) {
-		return response
-				.status(422)
-				.send({error: 'Expected name to be passed into the body'});
-		}
-	}
+  for (let requiredParameter of ['name']) {
+    if (!request.body[requiredParameter]) {
+      return response
+        .status(422)
+        .send({error: 'Expected name to be passed into the body'});
+    }
+  }
 
-database('items').insert(item, 'id')
-	.then(item => {
-		response.status(201).json({ id: item[0] })
-	})
-	.catch(error => {
-		response.status(500).json({ error });
-	});
+  database('items').insert(item, 'id')
+    .then(item => {
+      response.status(201).json({ id: item[0] });
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch('/api/v1/items/:id', (request, response) => {
@@ -82,7 +82,7 @@ app.delete('/api/v1/items/:id', (request, response) => {
     .del()
     .then(item => {
       if (item) {
-        response.status(204).json({status: 'Item deleted'});
+        response.status(202).json({status: 'Item deleted'});
       } else {
         response.status(403).json({error: 'Error item not found.'});
       }
@@ -92,8 +92,6 @@ app.delete('/api/v1/items/:id', (request, response) => {
     });
 });
 
-app.listen(app.get('port'), () => {
-    console.log(`${app.locals.title} is running on ${app.get('port')}.`);
-});
+app.listen(app.get('port'), () => {});
 
 module.exports = app;
