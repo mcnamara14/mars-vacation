@@ -77,6 +77,21 @@ app.patch('/api/v1/items/:id', (request, response) => {
     });
 });
 
+app.delete('/api/v1/items/:id', (request, response) => {
+  database('items').where('id', request.params.id)
+    .del()
+    .then(item => {
+      if (item) {
+        response.status(204).json({status: 'Item deleted'});
+      } else {
+        response.status(403).json({error: 'Error item not found.'});
+      }
+    })
+    .catch(error => {
+      response.status(500).json({error});
+    });
+});
+
 app.listen(app.get('port'), () => {
     console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
