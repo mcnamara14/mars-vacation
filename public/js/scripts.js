@@ -23,19 +23,18 @@
 // }
 
 const addItemToDb = async () => {
-  console.log('working')
   const name = document.querySelector('.item-input').value;
-  console.log(name)
+
   const response = await fetch('/api/v1/items',
     {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ name, packed: false })
+      body: JSON.stringify({ name })
     });
     const data = await response.json();
-    const projectId = data.id;
+    const itemId = data.id;
 }
 
 const addItemBtn = document.querySelector('.add-item-btn');

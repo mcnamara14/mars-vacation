@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post('/api/v1/items', (request, response) => {
 	const { name } = request.body;
-	const item = { name, packed:false };
+	const item = { name, packed: false };
 
 	for (let requiredParameter of ['name']) {
 		if (!request.body[requiredParameter]) {
