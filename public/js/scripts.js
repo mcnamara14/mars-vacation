@@ -40,8 +40,14 @@ const addItemToDb = async () => {
 }
 
 const retreiveFromDb = async (id) => {
-  
+  const response = await fetch(`/api/v1/items/${id}`)
+  const data = await response.json();
+  const item = data[0];
+
+  console.log(item)
 }
+
+
 
 const addItemBtn = document.querySelector('.add-item-btn');
 addItemBtn.addEventListener('click', addItemToDb)
