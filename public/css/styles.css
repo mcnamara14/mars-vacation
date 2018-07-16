@@ -1,0 +1,51 @@
+.container {
+  width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  margin:0;
+}
+
+hr {
+  border-top: 1px solid #ccc;
+  border-bottom: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.item-box {
+  width: 400px;
+  background: #eee;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #999;
+}
+
+.item-header {
+  display: flex;
+  margin: 0 auto 5px auto;
+  justify-content: space-between;
+  width: 80%;
+  align-items: center;
+}
+
+.delete-btn {
+  background: #fff !important;
+  border: 1px solid #999;
+  padding: 0px 20px;
+  height: 30px;
+}
+
+.packed-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+  margin-left: 10%;
+}
