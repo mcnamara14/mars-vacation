@@ -4,19 +4,7 @@ var chai = require('chai');
 var should = chai.should();
 var chaiHttp = require('chai-http');
 var server = require('../server');
-
-chai.use(chaiHttp);
-
-describe('API Routes', function() {
-
-});process.env.NODE_ENV = 'test';
-
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../server');
 var knex = require('../db/knex');
-
-var should = chai.should();
 
 chai.use(chaiHttp);
 
@@ -154,28 +142,24 @@ describe('API Routes', function() {
     });
   });
 
-  // describe('DELETE /api/v1/items/:id', () => {
-  //   it('should update an item', done => {
-  //     chai.request(server)
-  //       .patch('/api/v1/items/1')
-  //       .send({
-  //         name: 'Monkey'
-  //       })
-  //       .end((err, response) => {
-  //         response.should.have.status(201);
-  //         response.body.should.be.a('object');
-  //         done();
-  //       });
-  //   });
+  describe('DELETE /api/v1/items/:id', () => {
+    it('should delete an item', done => {
+      chai.request(server)
+        .delete('/api/v1/items/1')
+        .end((err, response) => {
+          response.should.have.status(202);
+          response.body.should.be.a('object');
+          done();
+        });
+    });
 
-  //   it('should return a 403 response when the item id passed in does not exist', done => {
-  //     chai.request(server)
-  //       .patch('/api/v1/items/1001')
-  //       .end((err, response) => {
-  //         response.should.have.status(403);
-  //         done();
-  //       });
-  //   });
-  // });
-
+    it('should return a 403 response when the item id passed in does not exist', done => {
+      chai.request(server)
+        .delete('/api/v1/items/1001')
+        .end((err, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+  });
 });
