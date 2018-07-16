@@ -40,6 +40,7 @@ const addItemToPage = (item) => {
   const checkbox = document.createElement('input');
   const packed = document.createElement('p');
   checkbox.setAttribute("type", "checkbox");
+  checkbox.className = 'packed-item-checkbox';
   packed.innerHTML = 'Packed';
   itemHeader.className = 'item-header';
   packedCheckbox.className = 'packed-checkbox';
@@ -57,9 +58,51 @@ const addItemToPage = (item) => {
   itemHeader.prepend(button);
   itemHeader.prepend(name);
   itemsContainer.prepend(article);
+
+  if (item.packed === true) {
+    checkbox.checked = true;
+  }
+}
+
+const updatePacked = async (e) => {
+  const checkbox = e.target;
+  const item = checkbox.closest('.item-box');
+  const id = item.getAttribute('id');
+  
+  checkbox.classList.toggle('packed');
+
+  if (checkbox.classList.contains('packed')) {
+    const response = await fetch(`/api/v1/items/${id}`, 
+    { 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify({ "packed": true })
+    });  
+  } else {
+    const response = await fetch(`/api/v1/items/${id}`, 
+    { 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify({ "packed": false })
+    });       
+  }
 }
 
 const addItemBtn = document.querySelector('.add-item-btn');
 addItemBtn.addEventListener('click', addItemToDb);
 
+const getCheckboxes = () => {
+  setTimeout(function() { 
+    const packedCheckboxes = document.querySelectorAll('.packed-item-checkbox');
+    packedCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => updatePacked(e))
+    });
+  }, 500);
+}
+
+getCheckboxes();
 addAllItemsToPage();

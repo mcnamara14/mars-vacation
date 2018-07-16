@@ -23,7 +23,6 @@ app.get('/api/v1/items', (request, response) => {
     });
 });
 
-
 app.get('/api/v1/items/:id', (request, response) => {
   database('items').where('id', request.params.id).select()
     .then(item => {
@@ -52,12 +51,44 @@ app.post('/api/v1/items', (request, response) => {
 		}
 	}
 
-  database('items').insert(item, 'id')
+database('items').insert(item, 'id')
+	.then(item => {
+		response.status(201).json({ id: item[0] })
+	})
+	.catch(error => {
+		response.status(500).json({ error });
+	});
+});
+
+app.patch('/api/v1/items/:id', (request, response) => {
+  const updatePacked = request.body;
+
+  database('items').where('id', request.params.id)
+    .update(updatePacked)
     .then(item => {
-      response.status(201).json({ id: item[0] })
+      if (item) {
+        response.status(201).json({status: `Item ${request.params.id} was updated`});
+      } else {
+        response.status(403).json({error: 'Item not found'});
+      }
     })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(500).json({error: 'Error editing item'});
+    });
+});
+
+app.delete('/api/v1/items/:id', (request, response) => {
+  database('items').where('id', request.params.id)
+    .del()
+    .then(item => {
+      if (item) {
+        response.status(204).json({status: 'Item deleted'});
+      } else {
+        response.status(403).json({error: 'Error item not found.'});
+      }
+    })
+    .catch(error => {
+      response.status(500).json({error});
     });
 });
 
