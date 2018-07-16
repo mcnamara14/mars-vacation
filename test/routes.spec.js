@@ -1,6 +1,17 @@
 process.env.NODE_ENV = 'test';
 
 var chai = require('chai');
+var should = chai.should();
+var chaiHttp = require('chai-http');
+var server = require('../server');
+
+chai.use(chaiHttp);
+
+describe('API Routes', function() {
+
+});process.env.NODE_ENV = 'test';
+
+var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../server');
 var knex = require('../db/knex');
@@ -120,27 +131,51 @@ describe('API Routes', function() {
   });
 
   describe('PATCH /api/v1/items/:id', () => {
-    // it('should update an item', done => {
-    //   chai.request(server)
-    //     .patch('/api/v1/items/1')
-    //     .send({
-    //       name: 'Monkey'
-    //     })
-    //     .end((err, response) => {
-    //       response.should.have.status(201);
-    //       response.body.should.be.a('object');
-    //       done();
-    //     });
-    // });
+    it('should update an item', done => {
+      chai.request(server)
+        .patch('/api/v1/items/1')
+        .send({
+          name: 'Monkey'
+        })
+        .end((err, response) => {
+          response.should.have.status(201);
+          response.body.should.be.a('object');
+          done();
+        });
+    });
 
-    it('should return a 403 response when the item id passed in does not exist', done => {
+    it('should return a 500 response when the item id passed in does not exist', done => {
       chai.request(server)
         .patch('/api/v1/items/1001')
         .end((err, response) => {
-          response.should.have.status(403);
+          response.should.have.status(500);
           done();
         });
     });
   });
+
+  // describe('DELETE /api/v1/items/:id', () => {
+  //   it('should update an item', done => {
+  //     chai.request(server)
+  //       .patch('/api/v1/items/1')
+  //       .send({
+  //         name: 'Monkey'
+  //       })
+  //       .end((err, response) => {
+  //         response.should.have.status(201);
+  //         response.body.should.be.a('object');
+  //         done();
+  //       });
+  //   });
+
+  //   it('should return a 403 response when the item id passed in does not exist', done => {
+  //     chai.request(server)
+  //       .patch('/api/v1/items/1001')
+  //       .end((err, response) => {
+  //         response.should.have.status(403);
+  //         done();
+  //       });
+  //   });
+  // });
 
 });
