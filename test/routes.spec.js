@@ -23,15 +23,15 @@ chai.use(chaiHttp);
 describe('Client Routes', function() {
   beforeEach(function(done) {
     knex.migrate.rollback()
-    .then(function() {
-      knex.migrate.latest()
       .then(function() {
-        return knex.seed.run()
-        .then(function() {
-          done();
-        });
+        knex.migrate.latest()
+          .then(function() {
+            return knex.seed.run()
+              .then(function() {
+                done();
+              });
+          });
       });
-    });
   });
 
   it('should return a 404 for a route that does not exist', done => {
@@ -47,15 +47,15 @@ describe('Client Routes', function() {
 describe('API Routes', function() {
   beforeEach(function(done) {
     knex.migrate.rollback()
-    .then(function() {
-      knex.migrate.latest()
       .then(function() {
-        return knex.seed.run()
-        .then(function() {
-          done();
-        });
+        knex.migrate.latest()
+          .then(function() {
+            return knex.seed.run()
+              .then(function() {
+                done();
+              });
+          });
       });
-    });
   });
 
   describe('GET /api/v1/items', () => {
@@ -73,7 +73,7 @@ describe('API Routes', function() {
           response.body[0].packed.should.equal(true);
           done();
         });
-    })
+    });
 
     it('should return a 404 when no item is found', done => {
       chai.request(server)
