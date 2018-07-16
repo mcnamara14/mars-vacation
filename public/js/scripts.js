@@ -121,8 +121,8 @@ const getDeleteBtns = () => {
   }, 500);  
 };
 
-const addItemBtn = document.querySelector('.add-item-btn');
-addItemBtn.addEventListener('click', addItemToDb);
+const addItemBtn = document.querySelector('form');
+addItemBtn.addEventListener('submit', addItemToDb);
 
 getDeleteBtns();
 getCheckboxes();
