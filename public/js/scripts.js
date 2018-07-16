@@ -1,3 +1,12 @@
+const addAllItemsToPage = async () => {
+  const response = await fetch('/api/v1/items/');
+  const items = await response.json();
+
+  items.forEach(item => {
+    addItemToPage(item)
+  })
+}
+
 const addItemToDb = async () => {
   const name = document.querySelector('.item-input').value;
 
@@ -51,4 +60,6 @@ const addItemToPage = (item) => {
 }
 
 const addItemBtn = document.querySelector('.add-item-btn');
-addItemBtn.addEventListener('click', addItemToDb)
+addItemBtn.addEventListener('click', addItemToDb);
+
+addAllItemsToPage();

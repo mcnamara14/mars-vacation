@@ -25,6 +25,7 @@ hr {
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #999;
+  margin: 0 auto 30px auto;
 }
 
 .item-header {
