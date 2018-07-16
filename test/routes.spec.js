@@ -94,7 +94,7 @@ describe('API Routes', function() {
   describe('POST /api/v1/items/', () => {
     it('should add an item', done => {
       chai.request(server)
-        .post('/api/v1/items')
+        .post('/api/v1/items/')
         .send({
           name: 'Monkey'
         })

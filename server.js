@@ -7,7 +7,7 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
-app.locals.title = 'Final Test';
+app.locals.title = 'Mars Vacation';
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -39,7 +39,7 @@ app.get('/api/v1/items/:id', (request, response) => {
     });
 });
 
-app.post('/api/v1/items', (request, response) => {
+app.post('/api/v1/items/', (request, response) => {
   const { name } = request.body;
   const item = { name, packed: false };
 
@@ -50,7 +50,7 @@ app.post('/api/v1/items', (request, response) => {
         .send({error: 'Expected name to be passed into the body'});
     }
   }
-
+  
   database('items').insert(item, 'id')
     .then(item => {
       response.status(201).json({ id: item[0] });
