@@ -13,6 +13,22 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.get('/api/v1/items/:id', (request, response) => {
+  database('items').where('id', request.params.id).select()
+    .then(item => {
+      if (item.length) {
+        response.status(200).json(item);
+      } else {
+        response.status(404).json({
+          error: `Could not find any items with id ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(404).json({error});
+    });
+});
+
 app.post('/api/v1/items', (request, response) => {
 	const { name } = request.body;
 	const item = { name, packed: false };

@@ -35,6 +35,12 @@ const addItemToDb = async () => {
     });
     const data = await response.json();
     const itemId = data.id;
+
+    retreiveFromDb(itemId)
+}
+
+const retreiveFromDb = async (id) => {
+  
 }
 
 const addItemBtn = document.querySelector('.add-item-btn');
