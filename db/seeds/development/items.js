@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
         {id: 2, name: 'Canned tuna', packed: false},
         {id: 3, name: 'All the cats', packed: true}
       ])
-      .then(() => console.log('Seeding complete!'))
-      .catch(error => console.log(`Error seeding data: ${error}`))
-    })
+        .then(() => console.log('Seeding complete!'));
+        .catch(error => console.log(`Error seeding data: ${error}`));
+    });
 };
