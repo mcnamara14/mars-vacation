@@ -58,6 +58,10 @@ const addItemToPage = (item) => {
   itemHeader.prepend(button);
   itemHeader.prepend(name);
   itemsContainer.prepend(article);
+
+  if (item.packed === true) {
+    checkbox.checked = true;
+  }
 }
 
 const updatePacked = async (e) => {
