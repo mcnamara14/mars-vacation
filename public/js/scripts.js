@@ -1,27 +1,3 @@
-
-// const addItem = (item) => {
-//   const itemsContainer = document.querySelector('.items-container');
-//   const article = document.createElement('article');
-//   const itemHeader = document.createElement('div');
-//   const packedCheckbox = document.createElement('div');
-//   const checkbox = document.createElement('input');
-//   const packed = document.createElement('p');
-//   itemHeader.className = 'item-header'
-//   article.className = 'item-box';
-//   article.id = item.id;
-//   const name = document.createElement('h2');
-//   const button = document.createElement('button');
-//   const buttonText = document.createTextNode('Delete');
-//   button.appendChild(buttonText);
-//   name.innerHTML = item.name;
-//   article.prepend(itemHeader);
-//   packedCheckbox.prepend(checkbox);
-//   packedCheckbox.prepend(packed);
-//   itemHeader.prepend(name);
-//   itemHeader.prepend(button);
-//   projects.prepend(article);
-// }
-
 const addItemToDb = async () => {
   const name = document.querySelector('.item-input').value;
 
@@ -44,10 +20,35 @@ const retreiveFromDb = async (id) => {
   const data = await response.json();
   const item = data[0];
 
-  console.log(item)
+  addItemToPage(item)
 }
 
-
+const addItemToPage = (item) => {
+  const itemsContainer = document.querySelector('.items-container');
+  const article = document.createElement('article');
+  const itemHeader = document.createElement('div');
+  const packedCheckbox = document.createElement('div');
+  const checkbox = document.createElement('input');
+  const packed = document.createElement('p');
+  checkbox.setAttribute("type", "checkbox");
+  packed.innerHTML = 'Packed';
+  itemHeader.className = 'item-header';
+  packedCheckbox.className = 'packed-checkbox';
+  article.className = 'item-box';
+  article.id = item.id;
+  const name = document.createElement('h2');
+  const button = document.createElement('button');
+  const buttonText = document.createTextNode('Delete');
+  button.appendChild(buttonText);
+  name.innerHTML = item.name;
+  article.prepend(packedCheckbox);
+  article.prepend(itemHeader);
+  packedCheckbox.prepend(packed);
+  packedCheckbox.prepend(checkbox);
+  itemHeader.prepend(button);
+  itemHeader.prepend(name);
+  itemsContainer.prepend(article);
+}
 
 const addItemBtn = document.querySelector('.add-item-btn');
 addItemBtn.addEventListener('click', addItemToDb)
