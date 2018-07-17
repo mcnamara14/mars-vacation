@@ -62,15 +62,6 @@ describe('API Routes', function() {
           done();
         });
     });
-
-    it('should return a 404 when no item is found', done => {
-      chai.request(server)
-        .get('/api/v1/items/1001')
-        .end((err, response) => {
-          response.should.have.status(404);
-          done();
-        });
-    });
   });
 
   describe('GET /api/v1/items/:id', () => {
@@ -81,6 +72,7 @@ describe('API Routes', function() {
           response.should.have.status(200);
           response.should.be.json;
           response.body.should.be.a('array');
+          response.body.length.should.equal(1)
           response.body[0].should.have.property('id');
           response.body[0].should.have.property('name');
           response.body[0].name.should.equal('Canned tuna');
@@ -89,27 +81,30 @@ describe('API Routes', function() {
           done();
         });
     });
-  });
 
-  describe('POST /api/v1/items/', () => {
-    it('should add an item', done => {
+    it('should return a 404 when no item is found', done => {
       chai.request(server)
-        .post('/api/v1/items/')
-        .send({
-          name: 'Monkey'
-        })
+        .get('/api/v1/items/1001')
         .end((err, response) => {
-          response.should.have.status(201);
+          response.should.have.status(404);
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Could not find any items with id 1001');
           done();
         });
     });
+  });
 
-    it('should return a 422 when all parameters are not passed in the body', done => {
+  describe('POST /api/v1/items', () => {
+    it.skip('should post a new item to the database', done => {
       chai.request(server)
         .post('/api/v1/items')
-        .send({})
-        .end((err, response) => {
-          response.should.have.status(422);
+        .send({ name: 'Chicken' })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.have.property('id');
+          response.body.id.should.equal(4);
           done();
         });
     });
@@ -123,17 +118,22 @@ describe('API Routes', function() {
           name: 'Monkey'
         })
         .end((err, response) => {
-          response.should.have.status(201);
+          response.should.have.status(200);
           response.body.should.be.a('object');
+          response.body.should.have.property('status');
+          response.body.status.should.equal('Item 1 was updated');
           done();
         });
     });
 
-    it('should return a 500 response when the item id passed in does not exist', done => {
+    it('should return a 404 when the parameter passed in does not exist', done => {
       chai.request(server)
         .patch('/api/v1/items/1001')
         .end((err, response) => {
-          response.should.have.status(500);
+          response.should.have.status(404);
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Item not found');
           done();
         });
     });
@@ -142,19 +142,36 @@ describe('API Routes', function() {
   describe('DELETE /api/v1/items/:id', () => {
     it('should delete an item', done => {
       chai.request(server)
-        .delete('/api/v1/items/1')
+        .get('/api/v1/items/')
         .end((err, response) => {
-          response.should.have.status(202);
-          response.body.should.be.a('object');
-          done();
+          response.body.length.should.equal(3);
+
+          chai.request(server)
+            .delete('/api/v1/items/1')
+            .end((err, response) => {
+              response.should.have.status(200);
+              response.body.should.be.a('object');
+              response.body.should.have.property('status');
+              response.body.status.should.equal('Item deleted');
+
+              chai.request(server)
+                .get('/api/v1/items/')
+                .end((err, response) => {
+                  response.body.length.should.equal(2);
+                  done();
+                });
+            });
         });
     });
 
     it('should return a 403 response when the item id passed in does not exist', done => {
       chai.request(server)
-        .delete('/api/v1/items/1001')
+        .delete('/api/v1/items/4')
         .end((err, response) => {
-          response.should.have.status(403);
+          response.should.have.status(404);
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Error item not found');
           done();
         });
     });
