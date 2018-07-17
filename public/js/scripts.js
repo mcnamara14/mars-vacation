@@ -42,7 +42,6 @@ const addItemToPage = (item) => {
   const checkbox = document.createElement('input');
   const packed = document.createElement('p');
   checkbox.setAttribute("type", "checkbox");
-  checkbox.className = 'packed-item-checkbox';
   packed.innerHTML = 'Packed';
   itemHeader.className = 'item-header';
   packedCheckbox.className = 'packed-checkbox';
@@ -60,13 +59,18 @@ const addItemToPage = (item) => {
   itemHeader.prepend(button);
   itemHeader.prepend(name);
   itemsContainer.prepend(article);
-
+ 
   if (item.packed === true) {
+    checkbox.className = 'packed';
     checkbox.checked = true;
+  } else {
+    checkbox.className = '';
+    checkbox.checked = false;
   }
 };
 
 const updatePacked = async (e) => {
+  e.preventDefault()
   const checkbox = e.target;
   const item = checkbox.closest('.item-box');
   const id = item.getAttribute('id');
@@ -96,7 +100,7 @@ const updatePacked = async (e) => {
 
 const getCheckboxes = () => {
   setTimeout(function() { 
-    const packedCheckboxes = document.querySelectorAll('.packed-item-checkbox');
+    const packedCheckboxes = document.querySelectorAll('.packed-checkbox input');
     packedCheckboxes.forEach(checkbox => {
       checkbox.addEventListener('change', (e) => updatePacked(e));
     });
